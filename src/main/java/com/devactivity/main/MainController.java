@@ -11,4 +11,17 @@ public class MainController {
 
         return "index";
     }
+
+    @GetMapping("/user")
+    public String user() {
+
+        return "user";
+    }
+
+    @GetMapping("/admin")
+    public String not() {
+
+        return "admin";
+    }
+
 }
