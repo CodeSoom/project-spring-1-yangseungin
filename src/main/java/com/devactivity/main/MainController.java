@@ -19,7 +19,7 @@ public class MainController {
     }
 
     @GetMapping("/admin")
-    public String not() {
+    public String admin() {
 
         return "admin";
     }
