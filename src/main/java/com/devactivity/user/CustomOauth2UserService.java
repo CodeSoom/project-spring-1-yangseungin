@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * OAuth2 회원 관련 로직을 처리합니다.
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -41,6 +44,12 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
                 , userNameAttributeName);
     }
 
+    /**
+     * 유저를 저장하고 저장된 유저를  반환합니다.
+     *
+     * @param oAuth2User 저장할 OAuth 유저
+     * @return 저장된 유저
+     */
     private User save(OAuth2User oAuth2User) {
         User user = userRepository.findByEmail(oAuth2User.getAttribute("email"))
                 .orElse(
