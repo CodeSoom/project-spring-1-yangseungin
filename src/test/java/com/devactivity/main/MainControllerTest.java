@@ -26,9 +26,6 @@ class MainControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private CustomOauth2UserService customOauth2UserService;
-
     @Nested
     @DisplayName("Get / 요청은")
     class Describe_home {
