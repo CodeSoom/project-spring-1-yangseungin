@@ -16,7 +16,15 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
+    /**
+     * 프로필의 이름
+     */
     private String name;
+
+    /**
+     * 깃헙 username
+     */
+    private String login;
     private String email;
     private String avatarUrl;
     private String htmlUrl;
@@ -27,12 +35,12 @@ public class User {
     private Integer following;
 
 
-
     private String rssUrl;
 
     @Builder
-    public User(String name, String email, String avatarUrl, String htmlUrl, String blogUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following, String rssUrl) {
+    public User(String name, String login, String email, String avatarUrl, String htmlUrl, String blogUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following, String rssUrl) {
         this.name = name;
+        this.login = login;
         this.email = email;
         this.avatarUrl = avatarUrl;
         this.htmlUrl = htmlUrl;
@@ -44,8 +52,9 @@ public class User {
         this.rssUrl = rssUrl;
     }
 
-    public User update(String name, String email, String avatar_url, String htmlUrl, String blogUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following) {
+    public User update(String name,String userName, String email, String avatar_url, String htmlUrl, String blogUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following) {
         this.name = name;
+        this.login = userName;
         this.email = email;
         this.avatarUrl = avatar_url;
         this.htmlUrl = htmlUrl;
