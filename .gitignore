@@ -35,5 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
-src/main/resources/static/
-src/main/resources/templates/
+
+### NPM Directory ###
+src/main/resources/static/node_modules
