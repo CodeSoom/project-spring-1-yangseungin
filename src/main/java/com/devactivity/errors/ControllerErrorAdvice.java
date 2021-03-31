@@ -10,6 +10,6 @@ public class ControllerErrorAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public String handleUserNotFound() {
-        return "error/404";
+        return "error/user-not-found";
     }
 }
