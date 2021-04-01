@@ -8,6 +8,9 @@
 </head>
 <body>
 <div>
+    <div th:if="${message}">
+        <span th:text="${message}">메시지</span>
+    </div>
 
     <p th:text="${user.getName()}">name</p>
     <p th:text="${user.getEmail()}">email</p>

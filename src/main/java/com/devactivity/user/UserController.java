@@ -56,4 +56,24 @@ public class UserController {
         model.addAttribute(mapper.map(user, ProfileForm.class));
         return "user/profile-edit";
     }
+
+    /**
+     * 유저 프로필 수정 요청을 처리합니다.
+     *
+     * @param profileForm 수정할 프로필
+     * @param principal   로그인한 유저
+     * @return 유저 프로필 view
+     */
+    @PostMapping("/profileedit")
+    public String updateProfile(Model model, @Valid ProfileForm profileForm, Errors errors,
+                                @AuthenticationPrincipal OAuth2User principal, RedirectAttributes attributes) {
+        User user = userService.getUser(principal.getAttribute("login"));
+        if (errors.hasErrors()) {
+            model.addAttribute(user);
+            return "user/profile-edit";
+        }
+        userService.updateProfile(user, profileForm);
+        attributes.addFlashAttribute("message", "프로필을 수정하였습니다.");
+        return "redirect:/profile/" + user.getLogin();
+    }
 }
