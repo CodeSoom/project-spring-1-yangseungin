@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Development activity</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div>
+    <div th:if="${message}">
+        <span th:text="${message}">메시지</span>
+    </div>
+
+    <p th:text="${user.getName()}">name</p>
+    <p th:text="${user.getEmail()}">email</p>
+    <p th:text="${user.getFollowers()}">followers</p>
+    <p th:text="${user.getFollowing()}">following</p>
+
+    <img th:if="${!#strings.isEmpty(user.avatarUrl)}" th:src="${user.avatarUrl}" width="100" height="100"/>
+    <p th:if="${!#strings.isEmpty(user.rssUrl)}" th:text="${user.rssUrl}">rss url</p>
+    <p th:if="${#strings.isEmpty(user.rssUrl) && isOwner}">
+        rssURL을 추가하세요.
+    </p>
+    <p th:if="${!#strings.isEmpty(user.bio)}" th:text="${user.bio}">bio</p>
+    <p th:if="${#strings.isEmpty(user.bio) && isOwner}">
+        자기소개를 추가하세요.
+    </p>
+
+</div>
+
+<ul>
+    <li class="nav-item" th:if="${isOwner}">
+        <a th:href="@{/profileedit}">프로필 수정</a>
+    </li>
+    <li class="nav-item" sec:authorize="!isAuthenticated()">
+        <a class="nav-link" href="/oauth2/authorization/github">Sign in with Github</a>
+    </li>
+    <li class="nav-item" sec:authorize="isAuthenticated()">
+        <a class="nav-link" th:href="@{/logout}">Logout</a>
+    </li>
+</ul>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
