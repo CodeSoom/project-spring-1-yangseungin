@@ -18,9 +18,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -44,8 +46,6 @@ class UserControllerTest {
                 .login(USER_NAME)
                 .name("seungin yang")
                 .build();
-
-
 
 
     }
@@ -100,7 +100,7 @@ class UserControllerTest {
 
     @Nested
     @DisplayName("GET /profileedit 요청은")
-    class Describe_viewProfileUpdate {
+    class Describe_viewProfileUpdateForm {
 
         @Nested
         @DisplayName("로그인한 사용자가 자신의 프로필을 수정하면")
@@ -124,6 +124,53 @@ class UserControllerTest {
                         .andExpect(model().attributeExists("user"))
                         .andExpect(model().attributeExists("profileForm"))
                         .andExpect(content().string(containsString("수정하기")));
+            }
+        }
+
+        @Nested
+        @DisplayName("가입한적이 없는 사용자의 프로필을 수정하려하면")
+        class Context_edit_profile_of_user_who_has_never_signed_up {
+            @BeforeEach
+            void setUp() {
+                given(userService.getUser(any())).willThrow(new UserNotFoundException(NOT_JOIN_USER_NAME));
+            }
+
+            @Test
+            @DisplayName("에러 페이지를 보여준다.")
+            void it_edit_profile() throws Exception {
+                mockMvc.perform(get("/profileedit")
+                        .with(oauth2Login()))
+                        .andDo(print())
+                        .andExpect(status().isNotFound())
+                        .andExpect(view().name("error/user-not-found"))
+                        .andExpect(content().string(containsString("없는 유저입니다.")));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("POST /profileedit 요청은")
+    class Describe_viewProfileUpdate {
+
+        @Nested
+        @DisplayName("로그인한 사용자가 자신의 프로필을 수정하면")
+        class Context_login_user_edit_his_or_her_profile {
+
+            @BeforeEach
+            void setUp() {
+                given(userService.getUser(any())).willReturn(user);
+            }
+
+            @Test
+            @DisplayName("프로필을 수정한다.")
+            void it_edit_profile() throws Exception {
+                mockMvc.perform(post("/profileedit")
+                        .with(oauth2Login())
+                        .param("bio", "안녕하세요")
+                        .param("rssUrl", "https://giantdwarf.tistory.com/rss"))
+                        .andDo(print())
+                        .andExpect(status().is3xxRedirection())
+                        .andExpect(redirectedUrl("/profile/"+user.getLogin()));
             }
         }
 
