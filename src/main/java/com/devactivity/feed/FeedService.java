@@ -41,4 +41,9 @@ public class FeedService {
 
         return feedRepository.findAllByAuthorOrderByCreatedDateDesc(user);
     }
+
+    public void deleteFeed(User user) {
+        Set<Feed> allByUserId = feedRepository.findAllByAuthor(user);
+        feedRepository.deleteAll(allByUserId);
+    }
 }
