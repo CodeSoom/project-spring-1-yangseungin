@@ -1,20 +1,31 @@
 package com.devactivity.user;
 
+import com.devactivity.feed.Feed;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
+@Setter
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * 프로필의 이름
@@ -38,6 +49,9 @@ public class User {
      */
     private String bio;
     private String rssUrl;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
+    private Set<Feed> feeds = new HashSet<>();
 
     @Builder
     public User(String name, String login, String email, String avatarUrl, String htmlUrl, String blogUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following, String rssUrl, String bio) {
