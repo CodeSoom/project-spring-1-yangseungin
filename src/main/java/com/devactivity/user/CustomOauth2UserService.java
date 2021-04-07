@@ -69,6 +69,8 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
                                 .publicGists(oAuth2User.getAttribute("public_gists"))
                                 .followers(oAuth2User.getAttribute("followers"))
                                 .following(oAuth2User.getAttribute("following"))
+                                .rssUrl("")
+                                .bio("")
                                 .build()
                 );
         return userRepository.save(user);
