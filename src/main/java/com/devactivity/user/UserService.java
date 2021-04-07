@@ -52,4 +52,13 @@ public class UserService {
         mapper.map(profileForm, user);
         userRepository.save(user);
     }
+
+    /**
+     * 유저의 rss url을 삭제합니다.
+     *
+     * @param user 삭제할 유저
+     */
+    public void deleteRssUrl(User user) {
+        user.setRssUrl("");
+    }
 }

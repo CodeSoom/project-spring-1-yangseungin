@@ -1,7 +1,10 @@
 package com.devactivity.user;
 
+import com.devactivity.feed.Feed;
+import com.devactivity.feed.FeedService;
 import com.devactivity.user.form.ProfileForm;
 import com.github.dozermapper.core.Mapper;
+import com.rometools.rome.io.FeedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -11,10 +14,13 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * 유저와 관련된 HTTP 요청을 처리합니다.
@@ -24,6 +30,7 @@ import java.util.Objects;
 public class UserController {
 
     private final UserService userService;
+    private final FeedService feedService;
     private final Mapper mapper;
 
     /**
@@ -37,9 +44,14 @@ public class UserController {
     public String viewProfile(@PathVariable String userName, Model model, @AuthenticationPrincipal OAuth2User principal) {
         User user = userService.getUser(userName);
         model.addAttribute(user);
+        boolean isOwner = false;
         if (!Objects.isNull(principal)) {
-            model.addAttribute("isOwner", userService.isOwner(principal, user));
+            isOwner = userService.isOwner(principal, user);
         }
+        model.addAttribute("isOwner", isOwner);
+        Set<Feed> feeds = feedService.getFeeds(user);
+        model.addAttribute("userFeeds", feeds);
+
         return "user/profile";
     }
 
@@ -59,21 +71,45 @@ public class UserController {
 
     /**
      * 유저 프로필 수정 요청을 처리합니다.
+     * <p>RSS URL을 등록하면 피드를 생성합니다.</p>
      *
      * @param profileForm 수정할 프로필
      * @param principal   로그인한 유저
      * @return 유저 프로필 view
      */
     @PostMapping("/profileedit")
-    public String updateProfile(Model model, @Valid ProfileForm profileForm, Errors errors,
-                                @AuthenticationPrincipal OAuth2User principal, RedirectAttributes attributes) {
+    public String updateProfilde(Model model, @Valid ProfileForm profileForm, Errors errors,
+                                 @AuthenticationPrincipal OAuth2User principal, RedirectAttributes attributes) throws IOException, FeedException {
         User user = userService.getUser(principal.getAttribute("login"));
         if (errors.hasErrors()) {
             model.addAttribute(user);
             return "user/profile-edit";
         }
         userService.updateProfile(user, profileForm);
+
+        if (!profileForm.getRssUrl().isBlank()) {
+            Set<Feed> feeds = feedService.createFeed(user);
+            model.addAttribute("userFeeds", feeds);
+        }
+
         attributes.addFlashAttribute("message", "프로필을 수정하였습니다.");
+        return "redirect:/profile/" + user.getLogin();
+    }
+
+    /**
+     * 유저의 rss url과 피드를 삭제합니다.
+     *
+     * @param principal 로그인한 유저
+     * @return 유저 프로필 view
+     */
+    @PutMapping("/profileedit")
+    public String deleteProfilde(@AuthenticationPrincipal OAuth2User principal, RedirectAttributes attributes){
+        User user = userService.getUser(principal.getAttribute("login"));
+        userService.deleteRssUrl(user);
+
+        feedService.deleteFeed(user);
+
+        attributes.addFlashAttribute("message", "rss등록을 해제하였습니다.");
         return "redirect:/profile/" + user.getLogin();
     }
 }
