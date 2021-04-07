@@ -13,7 +13,7 @@
     <form th:action="@{/profileedit}" th:object="${profileForm}" method="post">
         <div>
             <label for="bio">자기 소개</label>
-            <input id="bio" type="text" th:field="*{bio}" placeholder="100자 이내로 작성하세요" required>
+            <input id="bio" type="text" th:field="*{bio}" placeholder="100자 이내로 작성하세요">
             <small th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}">
                 길이가 맞지 않습니다.
             </small>
@@ -21,7 +21,7 @@
 
         <div>
             <label for="rss-url">rss url</label>
-            <input id="rss-url" type="url" th:field="*{rssUrl}" placeholder="블로그의 rss를 입력하세요" required>
+            <input id="rss-url" type="url" th:field="*{rssUrl}" placeholder="블로그의 rss를 입력하세요">
             <small th:if="${#fields.hasErrors('rssUrl')}" th:errors="*{rssUrl}">
                 옳바른 URL이 아닙니다.
             </small>
