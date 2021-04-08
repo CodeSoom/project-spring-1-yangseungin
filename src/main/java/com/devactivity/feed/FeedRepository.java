@@ -11,6 +11,4 @@ import java.util.Set;
 @Transactional(readOnly = true)
 public interface FeedRepository extends JpaRepository<Feed, Long> {
     Set<Feed> findAllByAuthorOrderByCreatedDateDesc(User userId);
-
-    Set<Feed> findAllByAuthor(User user);
 }

@@ -18,7 +18,17 @@
     <p th:text="${user.getFollowing()}">following</p>
 
     <img th:if="${!#strings.isEmpty(user.avatarUrl)}" th:src="${user.avatarUrl}" width="100" height="100"/>
-    <p th:if="${!#strings.isEmpty(user.rssUrl)}" th:text="${user.rssUrl}">rss url</p>
+    <div></div>
+    피드 리스트
+    <div th:if="${!#strings.isEmpty(user.rssUrl)}" th:each="feed:${userFeeds}">
+        <span th:text="${feed.title}"></span>
+        <span th:text="${feed.author.getName()}"></span>
+        <span th:text="${feed.getLink()}"></span>
+        <span th:text="${feed.getCreatedDate()}"></span>
+    </div>
+    <form th:if="${!#strings.isEmpty(user.rssUrl)&&isOwner}" th:action="@{/profileedit}" th:method="put">
+        <button type="submit">등록해제</button>
+    </form>
     <p th:if="${#strings.isEmpty(user.rssUrl) && isOwner}">
         rssURL을 추가하세요.
     </p>

@@ -43,7 +43,11 @@ public class FeedService {
     }
 
     public void deleteFeed(User user) {
-        Set<Feed> allByUserId = feedRepository.findAllByAuthor(user);
+        Set<Feed> allByUserId = getFeeds(user);
         feedRepository.deleteAll(allByUserId);
+    }
+
+    public Set<Feed> getFeeds(User user) {
+        return feedRepository.findAllByAuthorOrderByCreatedDateDesc(user);
     }
 }

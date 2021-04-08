@@ -12,10 +12,14 @@ feed list
 
     <div th:each="feed:${myFeeds}">
         <span th:text="${feed.title}"></span>
-        <span th:text="${feed.author}"></span>
+        <span th:text="${feed.author.getName()}"></span>
         <span th:text="${feed.getLink()}"></span>
         <span th:text="${feed.getCreatedDate()}"></span>
     </div>
+
+    <form th:action="@{/feed}" th:method="delete">
+            <button type="submit">등록해제</button>
+    </form>
 
 
 </div>
