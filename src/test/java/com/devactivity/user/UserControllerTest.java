@@ -1,8 +1,11 @@
 package com.devactivity.user;
 
 import com.devactivity.errors.UserNotFoundException;
+import com.devactivity.feed.Feed;
+import com.devactivity.feed.FeedService;
 import com.devactivity.user.form.ProfileForm;
 import com.github.dozermapper.core.Mapper;
+import com.rometools.rome.io.FeedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -11,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,6 +43,9 @@ class UserControllerTest {
     private UserService userService;
 
     @MockBean
+    private FeedService feedService;
+
+    @MockBean
     private Mapper mapper;
 
     private User user;
@@ -46,8 +56,6 @@ class UserControllerTest {
                 .login(USER_NAME)
                 .name("seungin yang")
                 .build();
-
-
     }
 
     @Nested
@@ -170,7 +178,7 @@ class UserControllerTest {
                         .param("rssUrl", "https://giantdwarf.tistory.com/rss"))
                         .andDo(print())
                         .andExpect(status().is3xxRedirection())
-                        .andExpect(redirectedUrl("/profile/"+user.getLogin()));
+                        .andExpect(redirectedUrl("/profile/" + user.getLogin()));
             }
         }
 
