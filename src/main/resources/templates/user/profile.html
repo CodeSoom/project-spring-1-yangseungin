@@ -37,6 +37,24 @@
         자기소개를 추가하세요.
     </p>
 
+    Github Repositories!
+    <div>
+        <table>
+            <tr>
+                <th>이름</th>
+                <th>언어</th>
+                <th>star</th>
+            </tr>
+            <tr th:each="repo : ${repos}">
+                <td th:text="${repo.getName()}"></td>
+                <td th:text="${repo.getLanguage()}"></td>
+                <td th:text="${repo.getStarCount()}"></td>
+            </tr>
+        </table>
+
+    </div>
+
+
 </div>
 
 <ul>

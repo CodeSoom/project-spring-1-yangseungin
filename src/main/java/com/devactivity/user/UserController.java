@@ -2,6 +2,8 @@ package com.devactivity.user;
 
 import com.devactivity.feed.Feed;
 import com.devactivity.feed.FeedService;
+import com.devactivity.repo.Repo;
+import com.devactivity.repo.RepoService;
 import com.devactivity.user.form.ProfileForm;
 import com.github.dozermapper.core.Mapper;
 import com.rometools.rome.io.FeedException;
@@ -31,6 +33,7 @@ public class UserController {
 
     private final UserService userService;
     private final FeedService feedService;
+    private final RepoService repoService;
     private final Mapper mapper;
 
     /**
@@ -51,6 +54,9 @@ public class UserController {
         model.addAttribute("isOwner", isOwner);
         Set<Feed> feeds = feedService.getFeeds(user);
         model.addAttribute("userFeeds", feeds);
+
+        Set<Repo> repos = repoService.getReposOrderByStar(user);
+        model.addAttribute("repos",repos);
 
         return "user/profile";
     }
@@ -103,7 +109,7 @@ public class UserController {
      * @return 유저 프로필 view
      */
     @PutMapping("/profileedit")
-    public String deleteProfilde(@AuthenticationPrincipal OAuth2User principal, RedirectAttributes attributes){
+    public String deleteProfilde(@AuthenticationPrincipal OAuth2User principal, RedirectAttributes attributes) {
         User user = userService.getUser(principal.getAttribute("login"));
         userService.deleteRssUrl(user);
 

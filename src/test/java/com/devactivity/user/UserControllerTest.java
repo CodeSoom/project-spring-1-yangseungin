@@ -3,6 +3,7 @@ package com.devactivity.user;
 import com.devactivity.errors.UserNotFoundException;
 import com.devactivity.feed.Feed;
 import com.devactivity.feed.FeedService;
+import com.devactivity.repo.RepoService;
 import com.devactivity.user.form.ProfileForm;
 import com.github.dozermapper.core.Mapper;
 import com.rometools.rome.io.FeedException;
@@ -44,6 +45,10 @@ class UserControllerTest {
 
     @MockBean
     private FeedService feedService;
+
+    @MockBean
+    private RepoService repoService;
+    
 
     @MockBean
     private Mapper mapper;
