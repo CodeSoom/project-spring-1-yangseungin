@@ -45,8 +45,10 @@
                 <th>언어</th>
                 <th>star</th>
             </tr>
-            <tr id="repo-list">
-
+            <tr th:each="repo : ${repos}">
+                <td th:text="${repo.getName()}"></td>
+                <td th:text="${repo.getLanguage()}"></td>
+                <td th:text="${repo.getStarCount()}"></td>
             </tr>
         </table>
 
@@ -68,37 +70,5 @@
 </ul>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    const repoApi = '[[${user.getReposUrl()}]]';
-    console.log(repoApi);
-    $(document).ready(function () {
-        $.ajax({
-            url: repoApi + "?per_page=100",
-            type: 'GET',
-            dataType: 'text',
-            success: function (data) {
-                console.log("repo 호출 성공");
-                let repo_data = JSON.parse(data);
-                repo_data.sort(function (a, b) {
-                    return b.stargazers_count - a.stargazers_count;
-                })
-                let table;
-                for (let i = 0; i < repo_data.length; i++) {
-                    table += `<tr><td>${repo_data[i].full_name}</td><td>`
-                    if (repo_data[i].language != null) {
-                        table += `${repo_data[i].language}`;
-                    }
-
-                    table += `</td><td>${repo_data[i].stargazers_count}</td></tr>`;
-                }
-                $('#repo-list').append(table);
-                console.log("사이즈 : " + repo_data.length);
-            },// 요청 완료 시
-            error: function () {
-                console.log("repo 호출 실패.");
-            }
-        });
-    });
-</script>
 </body>
 </html>

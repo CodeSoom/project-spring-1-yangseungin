@@ -1,5 +1,6 @@
 package com.devactivity.user;
 
+import com.devactivity.repo.RepoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -23,6 +24,7 @@ import java.util.List;
 public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
+    private final RepoService repoService;
     private final HttpSession httpSession;
 
     @Override
@@ -36,6 +38,8 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .getUserNameAttributeName();
 
         User user = save(oAuth2User);
+
+        repoService.createRepository(user);
 
         httpSession.setAttribute("user", user);
 
