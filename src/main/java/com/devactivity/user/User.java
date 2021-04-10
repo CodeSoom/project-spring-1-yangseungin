@@ -1,6 +1,7 @@
 package com.devactivity.user;
 
 import com.devactivity.feed.Feed;
+import com.devactivity.repo.Repo;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -56,6 +57,9 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "author")
     private Set<Feed> feeds = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
+    private Set<Repo> repos = new HashSet<>();
 
     @Builder
     public User(String name, String login, String email, String avatarUrl, String htmlUrl, String blogUrl, String reposUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following, String rssUrl, String bio) {
