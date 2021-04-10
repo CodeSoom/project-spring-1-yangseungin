@@ -60,6 +60,7 @@ public class RepoService {
                     .build();
             repos.add(repo);
         }
+        repoRepository.saveAll(repos);
     }
 
     /**
