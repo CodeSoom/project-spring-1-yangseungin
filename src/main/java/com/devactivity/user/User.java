@@ -14,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,6 +40,10 @@ public class User {
     private String avatarUrl;
     private String htmlUrl;
     private String blogUrl;
+    /**
+     * repository api url
+     */
+    private String reposUrl;
     private Integer publicRepos;
     private Integer publicGists;
     private Integer followers;
@@ -55,13 +58,14 @@ public class User {
     private Set<Feed> feeds = new HashSet<>();
 
     @Builder
-    public User(String name, String login, String email, String avatarUrl, String htmlUrl, String blogUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following, String rssUrl, String bio) {
+    public User(String name, String login, String email, String avatarUrl, String htmlUrl, String blogUrl, String reposUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following, String rssUrl, String bio) {
         this.name = name;
         this.login = login;
         this.email = email;
         this.avatarUrl = avatarUrl;
         this.htmlUrl = htmlUrl;
         this.blogUrl = blogUrl;
+        this.reposUrl = reposUrl;
         this.publicRepos = publicRepos;
         this.publicGists = publicGists;
         this.followers = followers;
@@ -70,13 +74,14 @@ public class User {
         this.bio = bio;
     }
 
-    public User update(String name, String userName, String email, String avatar_url, String htmlUrl, String blogUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following) {
+    public User update(String name, String userName, String email, String avatar_url, String htmlUrl, String blogUrl, String reposUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following) {
         this.name = name;
         this.login = userName;
         this.email = email;
         this.avatarUrl = avatar_url;
         this.htmlUrl = htmlUrl;
         this.blogUrl = blogUrl;
+        this.reposUrl = reposUrl;
         this.publicRepos = publicRepos;
         this.publicGists = publicGists;
         this.followers = followers;

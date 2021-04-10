@@ -53,9 +53,9 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
     private User save(OAuth2User oAuth2User) {
         User user = userRepository.findByEmail(oAuth2User.getAttribute("email"))
                 .map(user1 -> user1.update(oAuth2User.getAttribute("name"), oAuth2User.getAttribute("login"),
-                        oAuth2User.getAttribute("email"),oAuth2User.getAttribute("avatar_url"),
-                        oAuth2User.getAttribute("html_url"),oAuth2User.getAttribute("blog"),
-                        oAuth2User.getAttribute("public_repos"),oAuth2User.getAttribute("public_gists"),
+                        oAuth2User.getAttribute("email"), oAuth2User.getAttribute("avatar_url"),
+                        oAuth2User.getAttribute("html_url"), oAuth2User.getAttribute("blog"), oAuth2User.getAttribute("repos_url"),
+                        oAuth2User.getAttribute("public_repos"), oAuth2User.getAttribute("public_gists"),
                         oAuth2User.getAttribute("followers"), oAuth2User.getAttribute("following")))
                 .orElse(
                         User.builder()
@@ -65,6 +65,7 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
                                 .avatarUrl(oAuth2User.getAttribute("avatar_url"))
                                 .htmlUrl(oAuth2User.getAttribute("html_url"))
                                 .blogUrl(oAuth2User.getAttribute("blog"))
+                                .reposUrl(oAuth2User.getAttribute("repos_url"))
                                 .publicRepos(oAuth2User.getAttribute("public_repos"))
                                 .publicGists(oAuth2User.getAttribute("public_gists"))
                                 .followers(oAuth2User.getAttribute("followers"))
