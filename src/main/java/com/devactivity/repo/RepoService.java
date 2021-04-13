@@ -53,10 +53,12 @@ public class RepoService {
             Repo repo = Repo.builder()
                     .owner(user)
                     .name(repoInfo.get("name").toString())
+                    .fullName(repoInfo.get("full_name").toString())
                     .about((String) repoInfo.get("description"))
                     .language((String) repoInfo.get("language"))
                     .starCount((Integer) repoInfo.get("stargazers_count"))
                     .forkCount((Integer) repoInfo.get("forks_count"))
+                    .url((String) repoInfo.get("html_url"))
                     .build();
             repos.add(repo);
         }
