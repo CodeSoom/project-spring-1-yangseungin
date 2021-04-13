@@ -1,6 +1,9 @@
 package com.devactivity.main;
 
 import com.devactivity.user.CustomOauth2UserService;
+import com.devactivity.user.User;
+import com.devactivity.user.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -22,9 +28,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(MainController.class)
 class MainControllerTest {
     static final String REDIRECT_URL = "http://localhost/";
-
+    private static final String USER_NAME = "yangseungin";
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private UserService userService;
 
     @Nested
     @DisplayName("Get / 요청은")
@@ -135,6 +144,26 @@ class MainControllerTest {
                         .andDo(print())
                         .andExpect(status().isFound())
                         .andExpect(redirectedUrl(REDIRECT_URL));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("GET /search/user 요청은")
+    class Describe_search_user {
+
+        @Nested
+        @DisplayName("사용자가 존재하면")
+        class Context_exist_user {
+
+            @Test
+            @DisplayName("해당 유저의 프로필로 redirect한다")
+            public void it_show_profile_view() throws Exception {
+                mockMvc.perform(get("/search/user")
+                .param("userName",USER_NAME))
+                        .andDo(print())
+                        .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/profile/"+USER_NAME));
             }
         }
     }

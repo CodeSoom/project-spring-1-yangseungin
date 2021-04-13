@@ -22,7 +22,6 @@ public class MainController {
             model.addAttribute("user",principal);
         }
 
-
         return "index";
     }
 
@@ -37,5 +36,11 @@ public class MainController {
 
         return "admin";
     }
+
+    @GetMapping("/search/user")
+    public String searchUser(String userName) {
+        return "redirect:/profile/" + userName;
+    }
+
 
 }
