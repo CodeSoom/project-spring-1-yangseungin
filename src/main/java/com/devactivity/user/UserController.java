@@ -71,7 +71,10 @@ public class UserController {
     @GetMapping("/profileedit")
     public String updateProfileForm(Model model, @AuthenticationPrincipal OAuth2User principal) {
         User user = userService.getUser(principal.getAttribute("login"));
-        model.addAttribute(user);
+        model.addAttribute("profileUser",user);
+        if (!Objects.isNull(principal)) {
+            model.addAttribute("user",principal);
+        }
         model.addAttribute(mapper.map(user, ProfileForm.class));
         return "user/profile-edit";
     }

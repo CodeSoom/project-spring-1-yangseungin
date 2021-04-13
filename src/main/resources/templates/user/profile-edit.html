@@ -1,39 +1,67 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<head th:replace="fragments.html :: head"></head>
 <body>
-회원 프로필 수정
-<div>
-    <div>
-        <h2 th:text="${user.getName()}">name</h2>
+<nav th:replace="fragments.html :: nav"></nav>
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="row">
+            <div class="col-md-4">
+                <img th:if="${!#strings.isEmpty(profileUser.avatarUrl)}" th:src="${profileUser.avatarUrl}" width="70%"/>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <h2 th:text="${profileUser.getName()}">name</h2>
+                    <span th:text="'@'+${profileUser.getLogin()}">login</span>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-6">
+                        <dl>
+                            <dt>followers</dt>
+                            <dd th:text="${profileUser.getFollowers()}">followers</dd>
+                            <dt>following</dt>
+                            <dd th:text="${profileUser.getFollowing()}">following</dd>
+                        </dl>
+                    </div>
+                    <div class="col-6">
+                        <dl>
+                            <dd th:text="${profileUser.getEmail()}">email</dd>
+                            <dd th:if="${!profileUser.getBlogUrl().isEmpty()}" th:text="${profileUser.getBlogUrl()}">
+                                blog url
+                            </dd>
+                            <p th:if="${!#strings.isEmpty(profileUser.bio)}" th:text="${profileUser.bio}">bio</p>
+                            <p th:if="${#strings.isEmpty(profileUser.bio)}">
+                                자기소개를 추가하세요.
+                            </p>
+
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <hr>
     <form th:action="@{/profileedit}" th:object="${profileForm}" method="post">
-        <div>
+        <div class="form-group">
             <label for="bio">자기 소개</label>
-            <input id="bio" type="text" th:field="*{bio}" placeholder="100자 이내로 작성하세요">
+            <input class="form-control" id="bio" type="text" th:field="*{bio}" placeholder="100자 이내로 작성하세요">
             <small th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}">
                 길이가 맞지 않습니다.
             </small>
         </div>
 
-        <div>
+        <div class="form-group">
             <label for="rss-url">rss url</label>
-            <input id="rss-url" type="url" th:field="*{rssUrl}" placeholder="블로그의 rss를 입력하세요">
+            <input class="form-control" id="rss-url" type="url" th:field="*{rssUrl}" placeholder="블로그의 rss를 입력하세요">
             <small th:if="${#fields.hasErrors('rssUrl')}" th:errors="*{rssUrl}">
                 옳바른 URL이 아닙니다.
             </small>
         </div>
-
         <div>
-            <button type="submit">수정하기</button>
+            <button type="submit" class="btn btn-primary">수정하기</button>
         </div>
-
     </form>
-
-
 </div>
 </body>
 </html>
