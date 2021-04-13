@@ -16,7 +16,7 @@
         <div class="col-4">피드 리스트</div>
         <div class="col-8">
             <div class="row">
-                <table class="table table-hover" th:if="${!#strings.isEmpty(profileUser.rssUrl)}">
+                <table class="table table-hover" th:if="${!#strings.isEmpty(profileUser?.rssUrl)}">
                     <thead>
                     <tr>
                         <th>제목</th>
@@ -30,7 +30,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <form th:if="${!#strings.isEmpty(profileUser.rssUrl)&&isOwner}" th:action="@{/profileedit}"
+                            <form th:if="${!#strings.isEmpty(profileUser?.rssUrl)&&isOwner}" th:action="@{/profileedit}"
                                   th:method="put">
                                 <button type="submit" class="btn btn-danger btn-lg btn-block">등록 해제</button>
                             </form>
@@ -39,7 +39,7 @@
                     </tbody>
                 </table>
 
-                <p th:if="${#strings.isEmpty(profileUser.rssUrl) && isOwner}">
+                <p th:if="${#strings.isEmpty(profileUser?.rssUrl) && isOwner}">
                     rssURL을 추가하세요.
                 </p>
 

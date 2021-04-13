@@ -51,7 +51,7 @@
 <div th:fragment="profile-top" class="row mt-5 justify-content-center">
     <div class="row">
         <div class="col-md-4">
-            <img th:if="${!#strings.isEmpty(profileUser.avatarUrl)}" th:src="${profileUser.avatarUrl}" width="70%"/>
+            <img th:if="${!#strings.isEmpty(profileUser?.avatarUrl)}" th:src="${profileUser.avatarUrl}" width="70%"/>
         </div>
         <div class="col-md-8">
             <div class="row">
@@ -71,11 +71,11 @@
                 <div class="col-6">
                     <dl>
                         <dd th:text="${profileUser.getEmail()}">email</dd>
-                        <dd th:if="${!profileUser.getBlogUrl().isEmpty()}" th:text="${profileUser.getBlogUrl()}">
+                        <dd th:if="${!profileUser?.getBlogUrl().isEmpty()}" th:text="${profileUser.getBlogUrl()}">
                             blog url
                         </dd>
-                        <p th:if="${!#strings.isEmpty(profileUser.bio)}" th:text="${profileUser.bio}">bio</p>
-                        <p th:if="${#strings.isEmpty(profileUser.bio) && isOwner}">
+                        <p th:if="${!#strings.isEmpty(profileUser?.bio)}" th:text="${profileUser.bio}">bio</p>
+                        <p th:if="${#strings.isEmpty(profileUser?.bio) && isOwner}">
                             자기소개를 추가하세요.
                         </p>
                         <a th:if="${isOwner}" th:href="@{/profileedit}" class="btn btn-primary btn-sm active"
