@@ -1,12 +1,10 @@
 package com.devactivity.user;
 
 import com.devactivity.errors.UserNotFoundException;
-import com.devactivity.feed.Feed;
 import com.devactivity.feed.FeedService;
 import com.devactivity.repo.RepoService;
 import com.devactivity.user.form.ProfileForm;
 import com.github.dozermapper.core.Mapper;
-import com.rometools.rome.io.FeedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,10 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,7 +42,7 @@ class UserControllerTest {
 
     @MockBean
     private RepoService repoService;
-    
+
 
     @MockBean
     private Mapper mapper;
@@ -60,6 +54,12 @@ class UserControllerTest {
         user = User.builder()
                 .login(USER_NAME)
                 .name("seungin yang")
+                .reposUrl("")
+                .following(0)
+                .followers(0)
+                .rssUrl("https://giantdwarf.tistory.com/rss")
+                .bio("")
+                .blogUrl("")
                 .build();
     }
 

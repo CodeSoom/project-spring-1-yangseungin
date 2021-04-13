@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>Dev activity</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<nav th:fragment="nav" class="navbar navbar-dark navbar-expand-sm bg-dark">
+    <a class="navbar-brand" th:href="@{/}">dev</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">사용자</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">저장소</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">피드</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav" justify-content-end>
+            <li class="nav-item">
+                <form th:action="@{/search/user}" class="form-inline my-2 my-lg-0" method="get">
+                    <input class="form-control mr-sm-2" name="userName" type="search" placeholder="사용자 검색" aria-label="Search"/>
+                </form>
+            </li>
+
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-link" href="/oauth2/authorization/github">Sign in with Github</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{'/profile/'+${user?.getAttribute('login')}}" th:text="${user?.getAttribute('login')}">name</a>
+                <a class="nav-link" th:href="@{/logout}">Logout</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<div th:fragment="profile-top" class="row mt-5 justify-content-center">
+    <div class="row">
+        <div class="col-md-4">
+            <img th:if="${!#strings.isEmpty(profileUser?.avatarUrl)}" th:src="${profileUser.avatarUrl}" width="70%"/>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <h2 th:text="${profileUser.getName()}">name</h2>
+                <span th:text="'@'+${profileUser.getLogin()}">login</span>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <dl>
+                        <dt>followers</dt>
+                        <dd th:text="${profileUser.getFollowers()}">followers</dd>
+                        <dt>following</dt>
+                        <dd th:text="${profileUser.getFollowing()}">following</dd>
+                    </dl>
+                </div>
+                <div class="col-6">
+                    <dl>
+                        <dd th:text="${profileUser.getEmail()}">email</dd>
+                        <dd th:if="${!profileUser?.getBlogUrl().isEmpty()}" th:text="${profileUser.getBlogUrl()}">
+                            blog url
+                        </dd>
+                        <p th:if="${!#strings.isEmpty(profileUser?.bio)}" th:text="${profileUser.bio}">bio</p>
+                        <p th:if="${#strings.isEmpty(profileUser?.bio) && isOwner}">
+                            자기소개를 추가하세요.
+                        </p>
+                        <a th:if="${isOwner}" th:href="@{/profileedit}" class="btn btn-primary btn-sm active"
+                           role="button" aria-pressed="true">프로필 수정</a>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

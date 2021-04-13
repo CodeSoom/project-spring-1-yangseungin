@@ -1,74 +1,69 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>Development activity</title>
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
 <body>
-<div>
-    <div th:if="${message}">
+<nav th:replace="fragments.html :: nav"></nav>
+<div class="container">
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
         <span th:text="${message}">메시지</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">X</span>
+        </button>
     </div>
+    <div th:replace="fragments.html :: profile-top"></div>
+    <hr>
+    <div class="row mt-5 justify-content-center">
+        <div class="col-4">피드 리스트</div>
+        <div class="col-8">
+            <div class="row">
+                <table class="table table-hover" th:if="${!#strings.isEmpty(profileUser?.rssUrl)}">
+                    <thead>
+                    <tr>
+                        <th>제목</th>
+                        <th>작성일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="feed:${userFeeds}" th:onclick="window.open([[${feed.getLink()}]])">
+                        <td th:text="${feed.title}">feed title</td>
+                        <td th:text="${feed.getCreatedDate()}">작성일</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <form th:if="${!#strings.isEmpty(profileUser?.rssUrl)&&isOwner}" th:action="@{/profileedit}"
+                                  th:method="put">
+                                <button type="submit" class="btn btn-danger btn-lg btn-block">등록 해제</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-    <p th:text="${user.getName()}">name</p>
-    <p th:text="${user.getEmail()}">email</p>
-    <p th:text="${user.getFollowers()}">followers</p>
-    <p th:text="${user.getFollowing()}">following</p>
+                <p th:if="${#strings.isEmpty(profileUser?.rssUrl) && isOwner}">
+                    rssURL을 추가하세요.
+                </p>
 
-    <img th:if="${!#strings.isEmpty(user.avatarUrl)}" th:src="${user.avatarUrl}" width="100" height="100"/>
-    <div></div>
-    피드 리스트
-    <div th:if="${!#strings.isEmpty(user.rssUrl)}" th:each="feed:${userFeeds}">
-        <span th:text="${feed.title}"></span>
-        <span th:text="${feed.author.getName()}"></span>
-        <span th:text="${feed.getLink()}"></span>
-        <span th:text="${feed.getCreatedDate()}"></span>
+            </div>
+        </div>
     </div>
-    <form th:if="${!#strings.isEmpty(user.rssUrl)&&isOwner}" th:action="@{/profileedit}" th:method="put">
-        <button type="submit">등록해제</button>
-    </form>
-    <p th:if="${#strings.isEmpty(user.rssUrl) && isOwner}">
-        rssURL을 추가하세요.
-    </p>
-    <p th:if="${!#strings.isEmpty(user.bio)}" th:text="${user.bio}">bio</p>
-    <p th:if="${#strings.isEmpty(user.bio) && isOwner}">
-        자기소개를 추가하세요.
-    </p>
-
-    Github Repositories!
-    <div>
-        <table>
-            <tr>
-                <th>이름</th>
-                <th>언어</th>
-                <th>star</th>
-            </tr>
-            <tr th:each="repo : ${repos}">
-                <td th:text="${repo.getName()}"></td>
-                <td th:text="${repo.getLanguage()}"></td>
-                <td th:text="${repo.getStarCount()}"></td>
-            </tr>
-        </table>
-
+    <hr>
+    <div class="row mt-5 justify-content-center">
+        <div class="col-4">Github Repositories!</div>
+        <div class="col-8">
+            <table class="table table-hover">
+                <tr>
+                    <th>이름</th>
+                    <th>언어</th>
+                    <th>star</th>
+                </tr>
+                <tr th:each="repo:${repos}" th:onclick="window.open([[${repo.url}]])">
+                    <td th:text="${repo.getName()}"></td>
+                    <td th:text="${repo.getLanguage()}"></td>
+                    <td th:text="${repo.getStarCount()}"></td>
+                </tr>
+            </table>
+        </div>
     </div>
-
-
 </div>
-
-<ul>
-    <li class="nav-item" th:if="${isOwner}">
-        <a th:href="@{/profileedit}">프로필 수정</a>
-    </li>
-    <li class="nav-item" sec:authorize="!isAuthenticated()">
-        <a class="nav-link" href="/oauth2/authorization/github">Sign in with Github</a>
-    </li>
-    <li class="nav-item" sec:authorize="isAuthenticated()">
-        <a class="nav-link" th:href="@{/logout}">Logout</a>
-    </li>
-</ul>
-<script src="/node_modules/jquery/dist/jquery.min.js"></script>
-<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
