@@ -24,7 +24,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="feed:${userFeeds}" th:onclick="window.open([[${feed.getLink()}]])">
+                    <tr th:each="feed:${userFeeds}" th:onclick="window.open([[${feed.getLink()}]])" style="cursor:pointer;">
                         <td th:text="${feed.title}">feed title</td>
                         <td th:text="${feed.getCreatedDate()}">작성일</td>
                     </tr>
@@ -48,7 +48,16 @@
     </div>
     <hr>
     <div class="row mt-5 justify-content-center">
-        <div class="col-4">Github Repositories!</div>
+        <div class="col-4">
+            <div class="row">
+                <dl>
+                    <dt>Public Repositories</dt>
+                    <dd th:text="${profileUser.getPublicRepos()}">repos</dd>
+                    <dt>Public Gists</dt>
+                    <dd th:text="${profileUser.getPublicGists()}">gists</dd>
+                </dl>
+            </div>
+        </div>
         <div class="col-8">
             <table class="table table-hover">
                 <tr>
@@ -56,7 +65,7 @@
                     <th>언어</th>
                     <th>star</th>
                 </tr>
-                <tr th:each="repo:${repos}" th:onclick="window.open([[${repo.url}]])">
+                <tr th:each="repo:${repos}" th:onclick="window.open([[${repo.url}]])" style="cursor:pointer;">
                     <td th:text="${repo.getName()}"></td>
                     <td th:text="${repo.getLanguage()}"></td>
                     <td th:text="${repo.getStarCount()}"></td>
