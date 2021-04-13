@@ -46,9 +46,10 @@ public class UserController {
     @GetMapping("/profile/{userName}")
     public String viewProfile(@PathVariable String userName, Model model, @AuthenticationPrincipal OAuth2User principal) {
         User user = userService.getUser(userName);
-        model.addAttribute(user);
+        model.addAttribute("profileUser",user);
         boolean isOwner = false;
         if (!Objects.isNull(principal)) {
+            model.addAttribute("user",principal);
             isOwner = userService.isOwner(principal, user);
         }
         model.addAttribute("isOwner", isOwner);
