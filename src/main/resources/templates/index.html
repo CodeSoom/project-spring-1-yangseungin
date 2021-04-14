@@ -2,11 +2,65 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments.html :: head"></head>
 <body>
-<nav th:replace="fragments.html :: nav">
+<nav th:replace="fragments.html :: nav"></nav>
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="row">
+            <div class="col-md-4">
+                user rank rank rank !
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <h2> Repositories</h2>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Repository</th>
+                            <th>Star</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="repo, i:${repos}" th:onclick="window.open([[${repo.getUrl()}]])"
+                            style="cursor:pointer;">
+                            <td th:text="${i.count}">rank</td>
+                            <td th:text="${repo.getFullName()}">repository</td>
+                            <td th:text="${repo.getStarCount()}">stars</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a th:href="@{/}">Show more »</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <h2> 회원들의 최신 feed</h2>
+                    <div class="row row-cols-1 row-cols-md-1">
+                        <div th:each="feed : ${feeds}" class="col mb-4">
+                            <div class="card">
+                                <div class card-header>
+                                    <img th:src="${feed.getAuthor().avatarUrl}" class="rounded-circle float-left m-3"
+                                         width="15%">
+                                    <p class="card-title mt-3" th:text="${feed.getAuthor().login}"
+                                       th:onclick="'location.href=\''+ @{'/profile/'+${feed.getAuthor().login}} + '\''"
+                                       style="cursor:pointer;">user info</p>
+                                    <small th:text="${feed.getCreatedDate()}"></small>
+                                </div>
 
-</nav>
-index
+                                <div class="card-body">
+                                    <p class="card-text" th:text="${feed.title}"
+                                       th:onclick="window.open([[${feed.getLink()}]])"
+                                       style="cursor:pointer;">feed title</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-
+                </div>
+                <a th:href="@{/}">Show more »</a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
