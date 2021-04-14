@@ -36,11 +36,13 @@ class MainControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
+    private UserService userService;
+    @MockBean
     private RepoService repoService;
 
     @MockBean
     private  FeedService feedService;
-    
+
     @Nested
     @DisplayName("Get / 요청은")
     class Describe_home {
@@ -51,6 +53,7 @@ class MainControllerTest {
             mockMvc.perform(get("/"))
                     .andDo(print())
                     .andExpect(status().isOk())
+                    .andExpect(model().attributeExists("users"))
                     .andExpect(model().attributeExists("repos"))
                     .andExpect(model().attributeExists("feeds"))
                     .andExpect(view().name("index"))

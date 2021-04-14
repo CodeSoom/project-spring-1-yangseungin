@@ -7,7 +7,31 @@
     <div class="row mt-5 justify-content-center">
         <div class="row">
             <div class="col-md-4">
-                user rank rank rank !
+                <div class="row">
+                    <h2> Users</h2>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>User</th>
+                            <th>Star</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user, i:${users}"
+                            th:onclick="'location.href=\''+ @{'/profile/'+${user.login}} + '\''"
+                            style="cursor:pointer;">
+                            <td th:text="${i.count}">rank</td>
+                            <td class="p-0">
+                                <img th:src="${user.avatarUrl}" class="rounded-circle float-left mr-1" width="15%">
+                                <p th:text="${user.getLogin()}" class="mt-1">username</p>
+                            </td>
+                            <td th:text="${user.getStarCount()}">stars</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a th:href="@{/}">Show more »</a>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="row">
