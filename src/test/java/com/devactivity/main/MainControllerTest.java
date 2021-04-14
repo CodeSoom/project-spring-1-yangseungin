@@ -1,5 +1,6 @@
 package com.devactivity.main;
 
+import com.devactivity.repo.RepoService;
 import com.devactivity.user.CustomOauth2UserService;
 import com.devactivity.user.User;
 import com.devactivity.user.UserService;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -33,7 +35,7 @@ class MainControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private UserService userService;
+    private RepoService repoService;
 
     @Nested
     @DisplayName("Get / 요청은")
@@ -45,6 +47,7 @@ class MainControllerTest {
             mockMvc.perform(get("/"))
                     .andDo(print())
                     .andExpect(status().isOk())
+                    .andExpect(model().attributeExists("repos"))
                     .andExpect(view().name("index"))
                     .andExpect(content().string(containsString("Sign in with Github")));
         }

@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -81,5 +82,9 @@ public class RepoService {
         JSONArray body = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, new HttpEntity<>(httpHeaders), JSONArray.class)
                 .getBody();
         return body;
+    }
+
+    public List<Repo> getTopTenRepo() {
+        return repoRepository.findTop10AllByOrderByStarCountDesc();
     }
 }

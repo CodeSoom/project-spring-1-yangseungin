@@ -1,5 +1,7 @@
 package com.devactivity.main;
 
+import com.devactivity.repo.Repo;
+import com.devactivity.repo.RepoService;
 import com.devactivity.user.User;
 import com.devactivity.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -9,18 +11,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
 public class MainController {
-    private final UserService userService;
+    private final RepoService repoService;
 
     @GetMapping("/")
     public String home(Model model, @AuthenticationPrincipal OAuth2User principal) {
         if (!Objects.isNull(principal)) {
             model.addAttribute("user",principal);
         }
+        List<Repo> topTenRepo = repoService.getTopTenRepo();
+        model.addAttribute("repos",topTenRepo);
 
         return "index";
     }
