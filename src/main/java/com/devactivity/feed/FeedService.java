@@ -50,4 +50,8 @@ public class FeedService {
     public Set<Feed> getFeeds(User user) {
         return feedRepository.findAllByAuthorOrderByCreatedDateDesc(user);
     }
+
+    public List<Feed> getLastFiveFeed() {
+        return feedRepository.findTop5AllByOrderByCreatedDateDesc();
+    }
 }

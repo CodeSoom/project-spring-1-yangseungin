@@ -1,9 +1,9 @@
 package com.devactivity.main;
 
+import com.devactivity.feed.Feed;
+import com.devactivity.feed.FeedService;
 import com.devactivity.repo.Repo;
 import com.devactivity.repo.RepoService;
-import com.devactivity.user.User;
-import com.devactivity.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -18,6 +18,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class MainController {
     private final RepoService repoService;
+    private final FeedService feedService;
 
     @GetMapping("/")
     public String home(Model model, @AuthenticationPrincipal OAuth2User principal) {
@@ -26,6 +27,9 @@ public class MainController {
         }
         List<Repo> topTenRepo = repoService.getTopTenRepo();
         model.addAttribute("repos",topTenRepo);
+
+        List<Feed> lastTenFeed = feedService.getLastFiveFeed();
+        model.addAttribute("feeds",lastTenFeed);
 
         return "index";
     }
