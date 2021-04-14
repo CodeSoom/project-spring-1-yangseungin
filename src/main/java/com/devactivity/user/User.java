@@ -49,6 +49,7 @@ public class User {
     private Integer publicGists;
     private Integer followers;
     private Integer following;
+    private Integer starCount;
     /**
      * 자기소개
      */
@@ -62,7 +63,7 @@ public class User {
     private Set<Repo> repos = new HashSet<>();
 
     @Builder
-    public User(String name, String login, String email, String avatarUrl, String htmlUrl, String blogUrl, String reposUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following, String rssUrl, String bio) {
+    public User(String name, String login, String email, String avatarUrl, String htmlUrl, String blogUrl, String reposUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following, Integer starCount, String rssUrl, String bio) {
         this.name = name;
         this.login = login;
         this.email = email;
@@ -74,11 +75,12 @@ public class User {
         this.publicGists = publicGists;
         this.followers = followers;
         this.following = following;
+        this.starCount = starCount;
         this.rssUrl = rssUrl;
         this.bio = bio;
     }
 
-    public User update(String name, String userName, String email, String avatar_url, String htmlUrl, String blogUrl, String reposUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following) {
+    public User update(String name, String userName, String email, String avatar_url, String htmlUrl, String blogUrl, String reposUrl, Integer publicRepos, Integer publicGists, Integer followers, Integer following, Integer starCount) {
         this.name = name;
         this.login = userName;
         this.email = email;
@@ -90,6 +92,7 @@ public class User {
         this.publicGists = publicGists;
         this.followers = followers;
         this.following = following;
+        this.starCount = starCount;
         return this;
     }
 }
