@@ -41,6 +41,8 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         repoService.createRepository(user);
 
+        user.setStarCount(repoService.getTotalStar(user));
+
         httpSession.setAttribute("user", user);
 
         return new DefaultOAuth2User(List.of(new SimpleGrantedAuthority("ROLE_USER"))
@@ -60,7 +62,7 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
                         oAuth2User.getAttribute("email"), oAuth2User.getAttribute("avatar_url"),
                         oAuth2User.getAttribute("html_url"), oAuth2User.getAttribute("blog"), oAuth2User.getAttribute("repos_url"),
                         oAuth2User.getAttribute("public_repos"), oAuth2User.getAttribute("public_gists"),
-                        oAuth2User.getAttribute("followers"), oAuth2User.getAttribute("following")))
+                        oAuth2User.getAttribute("followers"), oAuth2User.getAttribute("following"), 0))
                 .orElse(
                         User.builder()
                                 .name(oAuth2User.getAttribute("name"))
@@ -74,6 +76,7 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
                                 .publicGists(oAuth2User.getAttribute("public_gists"))
                                 .followers(oAuth2User.getAttribute("followers"))
                                 .following(oAuth2User.getAttribute("following"))
+                                .starCount(0)
                                 .rssUrl("")
                                 .bio("")
                                 .build()

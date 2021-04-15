@@ -8,6 +8,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 유저 관련 로직을 처리합니다.
  */
@@ -60,5 +62,9 @@ public class UserService {
      */
     public void deleteRssUrl(User user) {
         user.setRssUrl("");
+    }
+
+    public List<User> getTopTenUser() {
+        return userRepository.findTop10AllByOrderByStarCountDesc();
     }
 }

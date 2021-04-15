@@ -87,4 +87,8 @@ public class RepoService {
     public List<Repo> getTopTenRepo() {
         return repoRepository.findTop10AllByOrderByStarCountDesc();
     }
+
+    public Integer getTotalStar(User user) {
+        return repoRepository.getTotalStarCount(user.getId());
+    }
 }
