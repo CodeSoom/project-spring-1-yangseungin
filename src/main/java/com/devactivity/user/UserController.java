@@ -8,6 +8,10 @@ import com.devactivity.user.form.ProfileForm;
 import com.github.dozermapper.core.Mapper;
 import com.rometools.rome.io.FeedException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -34,6 +38,7 @@ public class UserController {
     private final UserService userService;
     private final FeedService feedService;
     private final RepoService repoService;
+    private final UserRepository userRepository;
     private final Mapper mapper;
 
     /**
@@ -46,10 +51,10 @@ public class UserController {
     @GetMapping("/profile/{userName}")
     public String viewProfile(@PathVariable String userName, Model model, @AuthenticationPrincipal OAuth2User principal) {
         User user = userService.getUser(userName);
-        model.addAttribute("profileUser",user);
+        model.addAttribute("profileUser", user);
         boolean isOwner = false;
         if (!Objects.isNull(principal)) {
-            model.addAttribute("user",principal);
+            model.addAttribute("user", principal);
             isOwner = userService.isOwner(principal, user);
         }
         model.addAttribute("isOwner", isOwner);
@@ -57,7 +62,7 @@ public class UserController {
         model.addAttribute("userFeeds", feeds);
 
         Set<Repo> repos = repoService.getReposOrderByStar(user);
-        model.addAttribute("repos",repos);
+        model.addAttribute("repos", repos);
 
         return "user/profile";
     }
@@ -71,9 +76,9 @@ public class UserController {
     @GetMapping("/profileedit")
     public String updateProfileForm(Model model, @AuthenticationPrincipal OAuth2User principal) {
         User user = userService.getUser(principal.getAttribute("login"));
-        model.addAttribute("profileUser",user);
+        model.addAttribute("profileUser", user);
         if (!Objects.isNull(principal)) {
-            model.addAttribute("user",principal);
+            model.addAttribute("user", principal);
         }
         model.addAttribute(mapper.map(user, ProfileForm.class));
         return "user/profile-edit";
@@ -121,5 +126,17 @@ public class UserController {
 
         attributes.addFlashAttribute("message", "rss등록을 해제하였습니다.");
         return "redirect:/profile/" + user.getLogin();
+    }
+
+
+    @GetMapping("/users")
+    public String getUsers(@PageableDefault(size = 20, page = 0, sort = "starCount", direction = Sort.Direction.DESC) Pageable pageable, Model model, @AuthenticationPrincipal OAuth2User principal) {
+        if (!Objects.isNull(principal)) {
+            model.addAttribute("user", principal);
+        }
+        Page<User> userPage = userRepository.findAll(pageable);
+        model.addAttribute("userPage", userPage);
+
+        return "user/all-user";
     }
 }
