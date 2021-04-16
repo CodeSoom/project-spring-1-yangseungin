@@ -1,6 +1,8 @@
 package com.devactivity.repo;
 
 import com.devactivity.user.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,4 +20,6 @@ public interface RepoRepository extends JpaRepository<Repo, Long> {
 
     @Query("SELECT SUM(r.starCount) FROM Repo r WHERE r.owner.id = ?1")
     Integer getTotalStarCount(Long id);
+
+    Page<Repo> findAllByOrderByStarCountDesc(Pageable pageable);
 }

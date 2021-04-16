@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body>
+<nav th:replace="fragments.html :: nav"></nav>
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-6">
+            <div class="row">
+                <h2> User Ranking</h2>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>User</th>
+                        <th>Star</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user, i:${userPage}"
+                        th:onclick="'location.href=\''+ @{'/profile/'+${user.login}} + '\''"
+                        style="cursor:pointer;">
+                        <td th:text="${i.count}">rank</td>
+                        <td class="p-0">
+                            <img th:src="${user.avatarUrl}" class="rounded-circle float-left mr-1" width="15%">
+                            <p th:text="${user.getLogin()}" class="mt-1">username</p>
+                        </td>
+                        <td th:text="${user.getStarCount()}">stars</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="row justify-content-center">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${!userPage.hasPrevious()}? disabled">
+                    <a class="page-link"
+                       th:href="@{'/users?sort'+${userPage.getSort()}+',desc&page='+${userPage.getNumber()-1}}"
+                       tabindex="-1" aria-disabled="true" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+
+                <li th:each="i: ${#numbers.sequence(0, userPage.getTotalPages() -1)}"
+                    class="page-item" th:classappend="${i == userPage.getNumber()}? active">
+                    <a class="page-link" th:text="${i + 1}"
+                       th:href="@{'/users?sort'+${userPage.getSort()}+',desc&page='+${i}}">1</a>
+                </li>
+
+                <li class="page-item" th:classappend="${!userPage.hasNext()}? disabled">
+                    <a class="page-link"
+                       th:href="@{'/users?sort'+${userPage.getSort()}+',desc&page='+${userPage.getNumber()+1}}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+</div>
+</body>
+</html>

@@ -43,6 +43,9 @@ class UserControllerTest {
     @MockBean
     private RepoService repoService;
 
+    @MockBean
+    private UserRepository userRepository;
+
 
     @MockBean
     private Mapper mapper;
