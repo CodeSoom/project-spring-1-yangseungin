@@ -13,8 +13,10 @@ Java 11
 Spring Boot 2.4.4  
 Spring Security  
 Spring Data JPA  
-H2 db - 추후 변경예정  
+MariaDB
 Thymeleaf  
 JQuery
 
+# 서비스 링크
+[dev-activity](http://3.35.88.202:8080/)
 
