@@ -48,7 +48,4 @@ jobs:
       env:
           AWS_ACCESS_KEY_ID: ${{'{{' }} secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{'{{' }} secrets.AWS_SECRET_ACCESS_KEY }}
-      run: aws s3 cp \
-          --region ap-northeast-2 \        
-          --acl private \ 
-          ./dev-activity.zip s3://devactivity-deploy/  
+      run: aws s3 cp ./dev-activity.zip s3://devactivity-deploy/  --region ap-northeast-2
