@@ -17,6 +17,9 @@ MariaDB
 Thymeleaf  
 JQuery
 
+# CI
+Github Actions
+
 # 서비스 링크
 [dev-activity](http://3.35.88.202:8080/)
 
