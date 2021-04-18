@@ -45,7 +45,11 @@ jobs:
       
       # S3 Bucket으로 전송
     - name: Deliver to AWS S3
-      env:
+        env:
           AWS_ACCESS_KEY_ID: ${{'{{' }} secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{'{{' }} secrets.AWS_SECRET_ACCESS_KEY }}
-      run: aws s3 cp ./dev-activity.zip s3://devactivity-deploy/  --region ap-northeast-2
+        run: |
+          aws s3 cp \
+          --region ap-northeast-2 \
+          --acl private \
+          ./dev-activity.zip s3://devactivity-deploy/
