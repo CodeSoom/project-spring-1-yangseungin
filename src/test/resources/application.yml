@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: local
+
+
+---
+spring:
+  profiles:
+    include: oauth
+  jpa:
+    properties:
+      show_sql: true
