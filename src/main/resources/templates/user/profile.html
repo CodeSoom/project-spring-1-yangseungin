@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments.html :: head"></head>
 <body>
-<nav th:replace="fragments.html :: nav"></nav>
+<nav th:replace="fragments.html :: nav (current='profile')"></nav>
 <div class="container">
     <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
         <span th:text="${message}">메시지</span>
