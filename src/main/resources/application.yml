@@ -1,40 +1,73 @@
 spring:
   profiles:
-    active: local
-
-
+    group:
+      "local": "h2-db,oauth,common"
 ---
 spring:
   profiles:
-    include: oauth
+    group:
+      "set1": "real-db,oauth,common"
+---
+spring:
+  profiles:
+    group:
+      "set2": "real-db,oauth,common"
+---
+spring:
+  config:
+    activate:
+      on-profile: "set2"
+#    import: file:/Users/yangseung-in/app/config/real-application.yml, file:/Users/yangseung-in/app/config/oauth-application.yml # local
+    import: file:/app/config/real-application.yml, file:/app/config/oauth-application.yml # EC2
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8082
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "set1"
+#    import: file:/Users/yangseung-in/app/config/real-application.yml, file:/Users/yangseung-in/app/config/oauth-application.yml # local
+    import: file:/app/config/real-application.yml, file:/app/config/oauth-application.yml # EC2
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8081
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "h2-db"
+#    import: file:/Users/yangseung-in/app/config/oauth-application.yml  # local
+    import: file:/app/config/oauth-application.yml # EC2
   datasource:
     url: jdbc:h2:~/data/devactivity
     username: "sa"
     password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+server:
+  port: 8080
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "common"
   devtools:
     livereload:
       enabled: true
   thymeleaf:
     cache: false
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      show_sql: true
-      hibernate:
-        format_sql: true
-        show_sql: true
-#        generate_statistics: true
-#        jdbc:
-#          batch_size: 1000
-#        order_inserts: true
-  level:
-    org:
-      hibernate:
-        SQL: debug
-        type: trace
-
-
   mvc:
     hiddenmethod:
       filter:

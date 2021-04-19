@@ -1,12 +1,22 @@
-spring:
-  profiles:
-    active: local
-
-
 ---
 spring:
-  profiles:
-    include: oauth
-  jpa:
-    properties:
-      show_sql: true
+  datasource:
+    url: jdbc:h2:~/data/devactivity
+    username: "sa"
+    password: ""
+    jpa:
+      hibernate:
+        ddl-auto: create-drop
+  thymeleaf:
+    cache: false
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: your-client-id
+            clientSecret: your-client-secret
