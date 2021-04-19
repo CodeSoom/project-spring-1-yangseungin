@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
+name: Java CI/CD with Gradle
 
 on:
   push:
@@ -22,27 +22,31 @@ jobs:
         java-version: 11
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      
+
       # Build
     - name: Build with Gradle
       run: ./gradlew build
-      
+
       # TEST
     - name: Test with Gradle
       run: ./gradlew test
-      
-      # 전송파일 
+
+      # 전송파일
     - name: Make Directory for deploy
       run: mkdir deploy
-      
+
       # jar 복사
     - name: Copy Jar
       run: cp ./build/libs/*.jar ./deploy/
-      
+
+      # appspec.yml copy
+    - name: Copy appspec
+      run: cp appspec.yml ./deploy/
+
       # 파일압축
-    - name: Make zip 
+    - name: Make zip
       run: zip -r -qq -j ./dev-activity.zip ./deploy
-      
+
       # S3 Bucket으로 전송
     - name: Deliver to AWS S3
       env:
@@ -50,6 +54,20 @@ jobs:
         AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
       run: |
         aws s3 cp \
-          --acl private \
-          --region ap-northeast-2 \
-          ./dev-activity.zip s3://devactivity-deploy/
+        --acl private \
+        --region ap-northeast-2 \
+        ./dev-activity.zip s3://devactivity-deploy/
+
+
+      # AWS CodeDeploy
+    - name: Deploy EC2
+      env:
+        AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+        AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+      run: |
+        aws deploy create-deployment \
+        --application-name dev-activity \
+        --deployment-group-name dev-activity-group \
+        --file-exists-behavior OVERWRITE \
+        --s3-location bucket=devactivity-deploy,bundleType=zip,key=dev-activity.zip \
+        --region ap-northeast-2
