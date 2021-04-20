@@ -13,9 +13,9 @@ permissions:
 hooks:
   AfterInstall:
     - location: deploy.sh
-        timeout: 60
-        runas: ec2-user
+      timeout: 60
+      runas: ec2-user
   ValidateService:
     - location: switch.sh
-        timeout: 60
-        runas: ec2-user
+      timeout: 60
+      runas: ec2-user
