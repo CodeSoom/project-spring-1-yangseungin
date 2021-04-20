@@ -72,3 +72,13 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: "/secure/actuator"
+  endpoint:
+    health:
+      show-details: always
