@@ -21,5 +21,5 @@ JQuery
 Github Actions
 
 # 서비스 링크
-[dev-activity](http://3.35.88.202:8080/)
+[dev-activity](http://54.180.76.124/)
 
