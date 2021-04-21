@@ -17,9 +17,9 @@ MariaDB
 Thymeleaf  
 JQuery
 
-# CI
-Github Actions
+# 전체 구성도
+<img src="https://github.com/yangseungin/TIL/blob/master/%ED%9A%8C%EA%B3%A0/%EC%BD%94%EB%93%9C%EC%88%A8/%EC%82%AC%EC%A7%84/%EA%B5%AC%EC%84%B1%EB%8F%84.png?raw=true" width="70%">
 
 # 서비스 링크
-[dev-activity](http://54.180.76.124/)
+http://dev-activity.com
 
