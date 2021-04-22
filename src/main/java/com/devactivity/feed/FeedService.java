@@ -23,8 +23,7 @@ public class FeedService {
 
     private final FeedRepository feedRepository;
 
-    public Set<Feed> createFeed(User user) throws IOException, FeedException {
-        String rssUrl = user.getRssUrl();
+    public Set<Feed> createFeed(User user, String rssUrl) throws IOException, FeedException {
         SyndFeed syndFeed = new SyndFeedInput().build(new XmlReader(new URL(rssUrl)));
         List<SyndEntry> entries = syndFeed.getEntries();
         Set<Feed> feeds = user.getFeeds();

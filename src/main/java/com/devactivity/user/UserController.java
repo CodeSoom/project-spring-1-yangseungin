@@ -100,12 +100,12 @@ public class UserController {
             model.addAttribute(user);
             return "user/profile-edit";
         }
-        userService.updateProfile(user, profileForm);
 
         if (!profileForm.getRssUrl().isBlank()) {
-            Set<Feed> feeds = feedService.createFeed(user);
+            Set<Feed> feeds = feedService.createFeed(user,profileForm.getRssUrl());
             model.addAttribute("userFeeds", feeds);
         }
+        userService.updateProfile(user, profileForm);
 
         attributes.addFlashAttribute("message", "프로필을 수정하였습니다.");
         return "redirect:/profile/" + user.getLogin();

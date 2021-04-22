@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<head th:replace="fragments.html :: head"></head>
 <body>
-Rss URL을 등록해주세요.
+<nav th:replace="fragments.html :: nav (current='error')"></nav>
+올바른 Rss URL을 등록해주세요.
 <a th:href="@{/profileedit}">프로필 수정</a>
 
 </body>
 </html>
+
