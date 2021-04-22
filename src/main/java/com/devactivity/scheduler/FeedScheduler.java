@@ -28,7 +28,7 @@ public class FeedScheduler {
                 .collect(Collectors.toSet());
         AllUserRssNotEmpty.forEach(user -> {
             try {
-                feedService.createFeed(user);
+                feedService.createFeed(user, user.getRssUrl());
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (FeedException e) {

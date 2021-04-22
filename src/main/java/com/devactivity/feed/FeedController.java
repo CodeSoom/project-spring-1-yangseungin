@@ -30,7 +30,7 @@ public class FeedController {
             return "error/rss-not-found";
         }
 
-        Set<Feed> feeds = feedService.createFeed(user);
+        Set<Feed> feeds = feedService.createFeed(user, user.getRssUrl());
         model.addAttribute("myFeeds", feeds);
 
         return "feed/feed";
